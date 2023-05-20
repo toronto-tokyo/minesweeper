@@ -1,3 +1,6 @@
+let steps = 0;
+let openedBoxes = 0;
+
 class Box {
   constructor(isMine, place) {
     this.isMine = isMine;
@@ -6,6 +9,8 @@ class Box {
 
   addBox(matrix) {
     this.box = document.createElement('div');
+    this.box.dataset.x = this.place.x;
+    this.box.dataset.y = this.place.y;
     this.cap = document.createElement('div');
     this.boxContent = document.createElement('div');
     this.box.className = 'box';
@@ -56,12 +61,15 @@ class Box {
         return;
       }
       if (box.isMine === true) {
-        alert('lose');
-      } else if (box.isNumber === true) {
+        return;
+      }
+      if (box.isNumber === true) {
         box.cap.classList.add('hidden');
-      } else {
+        openedBoxes += 1;
+      } else if (box.isEmpty) {
         box.cap.classList.add('hidden');
-        console.log(box.box);
+        openedBoxes += 1;
+        // console.log(box.box);
         const { y, x } = box.place;
         const roundBoxes = [];
         const topLeftBox = matr[y - 1]?.[x - 1];
@@ -85,9 +93,12 @@ class Box {
     }
 
     this.box.addEventListener('click', () => {
+      if (!this.cap.className.includes('hidden')) {
+        steps += 1;
+      }
       removeCap(matrix, this);
     });
   }
 }
 
-export default Box;
+export { Box, steps, openedBoxes };
