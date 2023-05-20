@@ -1,5 +1,5 @@
 import getRndInteger from './getRandom';
-import Box from './mine';
+import { Box, openedBoxes } from './mine';
 
 class MinesField {
   constructor(sizeX = 10, sizeY = 10, minesCount = 10) {
@@ -9,7 +9,7 @@ class MinesField {
     this.matrix = [];
   }
 
-  addField() {
+  createField() {
     this.fieldRows = [];
     this.minesField = document.createElement('div');
     const minesFieldRow = document.createElement('div');
@@ -20,7 +20,8 @@ class MinesField {
       this.fieldRows.push(row);
       this.minesField.append(row);
     }
-    document.body.append(this.minesField);
+    this.addContent();
+    return this.minesField;
   }
 
   addContent() {
@@ -57,6 +58,22 @@ class MinesField {
         count -= 1;
       }
     }
+  }
+
+  onClick(timer, message) {
+    this.minesField.addEventListener('click', (e) => {
+      if (e.target.closest('.box')) {
+        timer.countTime();
+        const box = e.target.closest('.box');
+        const x = box.dataset.x;
+        const y = box.dataset.y;
+        if ((this.sizeX * this.sizeY) - openedBoxes === this.minesCount) {
+          const time = timer.getTime();
+          message.displayWin(time);
+        }
+        if (this.matrix[y][x] === 1) message.displayLose(timer.getTime());
+      }
+    });
   }
 }
 
