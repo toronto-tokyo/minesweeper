@@ -6,7 +6,6 @@ class Timer {
   countTime() {
     if (this.time === 0) {
       setInterval(() => {
-        console.log(this.time / 10);
         this.time += 1;
       }, 100);
     }
