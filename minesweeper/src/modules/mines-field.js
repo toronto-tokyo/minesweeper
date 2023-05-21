@@ -65,6 +65,7 @@ class MinesField {
         const box = e.target.closest('.box');
         const x = box.dataset.x;
         const y = box.dataset.y;
+        if (!this.boxesMatrix[y][x].cap.className.includes('hidden')) this.stepsDisplay.incrValue();
         if (!this.firstClickPlace) {
           this.firstClickPlace = box.dataset;
           this.placeMines(y, x);
@@ -110,6 +111,14 @@ class MinesField {
   setMinesDisplay(display) {
     this.minesDisplay = display;
     this.minesDisplay.setValue(this.minesCount);
+  }
+
+  setStepsDisplay(display) {
+    this.stepsDisplay = display;
+  }
+
+  setTimeDisplay(display) {
+    this.timeDisplay = display;
   }
 }
 
