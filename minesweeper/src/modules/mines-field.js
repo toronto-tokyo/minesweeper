@@ -82,6 +82,34 @@ class MinesField {
         if (this.matrix[y][x] === 1) message.displayLose(timer.getTime());
       }
     });
+    this.minesField.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      if (e.target.closest('.box')) {
+        timer.countTime();
+        const boxElem = e.target.closest('.box');
+        const x = boxElem.dataset.x;
+        const y = boxElem.dataset.y;
+        const box = this.boxesMatrix[y][x];
+        box.isFlagged = !box.isFlagged;
+        box.box.classList.toggle('flagged');
+        if (box.isFlagged) {
+          this.flagsDisplay.incrValue();
+          this.minesDisplay.decrValue();
+        } else {
+          this.minesDisplay.incrValue();
+          this.flagsDisplay.decrValue();
+        }
+      }
+    });
+  }
+
+  setFlagsDisplay(display) {
+    this.flagsDisplay = display;
+  }
+
+  setMinesDisplay(display) {
+    this.minesDisplay = display;
+    this.minesDisplay.setValue(this.minesCount);
   }
 }
 

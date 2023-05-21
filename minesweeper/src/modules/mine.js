@@ -5,6 +5,7 @@ class Box {
   constructor(isMine, place) {
     this.isMine = isMine;
     this.place = place;
+    this.isFlagged = false;
   }
 
   setIsMine(value) {
@@ -75,6 +76,9 @@ class Box {
 
 function removeCap(matr, box) {
   if (!box || box.cap.className.includes('hidden')) {
+    return;
+  }
+  if (box.isFlagged) {
     return;
   }
   if (box.isNumber === true) {
