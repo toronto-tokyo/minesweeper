@@ -1,6 +1,3 @@
-let steps = 0;
-let openedBoxes = 0;
-
 class Box {
   constructor(isMine, place) {
     this.isMine = isMine;
@@ -64,17 +61,9 @@ class Box {
       + leftBox;
     return count;
   }
-
-  onClick() {
-    this.box.addEventListener('click', () => {
-      if (!this.cap.className.includes('hidden')) {
-        steps += 1;
-      }
-    });
-  }
 }
 
-function removeCap(matr, box) {
+function removeCap(matr, box, openedBoxesAmount) {
   if (!box || box.cap.className.includes('hidden')) {
     return;
   }
@@ -83,10 +72,10 @@ function removeCap(matr, box) {
   }
   if (box.isNumber === true) {
     box.cap.classList.add('hidden');
-    openedBoxes += 1;
+    openedBoxesAmount[0] += 1;
   } else if (box.isEmpty) {
     box.cap.classList.add('hidden');
-    openedBoxes += 1;
+    openedBoxesAmount[0] += 1;
     const { y, x } = box.place;
     const roundBoxes = [];
     const topLeftBox = matr[y - 1]?.[x - 1];
@@ -105,13 +94,11 @@ function removeCap(matr, box) {
     roundBoxes.push(topRightBox);
     roundBoxes.push(botRightBox);
     roundBoxes.push(botLeftBox);
-    roundBoxes.forEach((el) => removeCap(matr, el));
+    roundBoxes.forEach((el) => removeCap(matr, el, openedBoxesAmount));
   }
 }
 
 export {
   Box,
-  steps,
-  openedBoxes,
   removeCap,
 };

@@ -1,4 +1,4 @@
-import { steps } from './mine';
+// import { steps } from './mine';
 
 class Message {
   constructor(button) {
@@ -21,7 +21,7 @@ class Message {
     document.body.append(this.message);
   }
 
-  displayWin(time) {
+  displayWin(time, steps) {
     this.contentText.innerText = `Hooray! You found all mines in ${time} seconds and ${steps} moves`;
     document.body.append(this.message);
   }

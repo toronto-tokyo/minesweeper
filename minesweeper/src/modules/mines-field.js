@@ -1,5 +1,5 @@
 import getRndInteger from './getRandom';
-import { Box, openedBoxes, removeCap } from './mine';
+import { Box, removeCap } from './mine';
 
 class MinesField {
   constructor(sizeX = 10, sizeY = 10, minesCount = 10) {
@@ -7,6 +7,8 @@ class MinesField {
     this.sizeY = sizeY;
     this.minesCount = minesCount;
     this.matrix = [];
+    this.steps = 0;
+    this.openedBoxesAmount = [0];
   }
 
   createField() {
@@ -29,7 +31,6 @@ class MinesField {
       for (let j = 0; j < this.sizeX; j += 1) {
         const box = new Box(false, { y: i, x: j });
         const boxElem = box.addBox();
-        box.onClick(this.boxesMatrix);
         this.fieldRows[i].append(boxElem);
         this.boxesMatrix[i][j] = box;
       }
@@ -65,7 +66,10 @@ class MinesField {
         const box = e.target.closest('.box');
         const x = box.dataset.x;
         const y = box.dataset.y;
-        if (!this.boxesMatrix[y][x].cap.className.includes('hidden')) this.stepsDisplay.incrValue();
+        if (!this.boxesMatrix[y][x].cap.className.includes('hidden')) {
+          this.steps += 1;
+          this.stepsDisplay.setValue(this.steps);
+        }
         if (!this.firstClickPlace) {
           this.firstClickPlace = box.dataset;
           this.placeMines(y, x);
@@ -75,12 +79,13 @@ class MinesField {
             }
           }
         }
-        removeCap(this.boxesMatrix, this.boxesMatrix[y][x]);
-        if ((this.sizeX * this.sizeY) - openedBoxes === this.minesCount) {
+        removeCap(this.boxesMatrix, this.boxesMatrix[y][x], this.openedBoxesAmount);
+        console.log((this.sizeX * this.sizeY) - this.openedBoxesAmount);
+        if ((this.sizeX * this.sizeY) - this.openedBoxesAmount === this.minesCount) {
           const time = timer.getTime();
-          message.displayWin(time);
+          message.displayWin(time, this.steps);
         }
-        if (this.matrix[y][x] === 1) message.displayLose(timer.getTime());
+        if (this.matrix[y][x] === 1) message.displayLose(timer.getTime(), this.steps);
       }
     });
     this.minesField.addEventListener('contextmenu', (e) => {
