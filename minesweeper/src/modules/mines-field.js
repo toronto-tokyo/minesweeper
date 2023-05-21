@@ -1,5 +1,6 @@
 import getRndInteger from './getRandom';
 import { Box, removeCap } from './mine';
+import playMusic from './playMusic';
 
 class MinesField {
   constructor(sizeX = 10, sizeY = 10, minesCount = 10) {
@@ -67,6 +68,7 @@ class MinesField {
         const x = box.dataset.x;
         const y = box.dataset.y;
         if (!this.boxesMatrix[y][x].cap.className.includes('hidden')) {
+          playMusic('openBox');
           this.steps += 1;
           this.stepsDisplay.setValue(this.steps);
         }
@@ -84,8 +86,12 @@ class MinesField {
         if ((this.sizeX * this.sizeY) - this.openedBoxesAmount === this.minesCount) {
           const time = timer.getTime();
           message.displayWin(time, this.steps);
+          playMusic('win');
         }
-        if (this.matrix[y][x] === 1) message.displayLose(timer.getTime(), this.steps);
+        if (this.matrix[y][x] === 1) {
+          playMusic('lose');
+          message.displayLose(timer.getTime(), this.steps);
+        }
       }
     });
     this.minesField.addEventListener('contextmenu', (e) => {
@@ -99,6 +105,7 @@ class MinesField {
         box.isFlagged = !box.isFlagged;
         box.box.classList.toggle('flagged');
         if (box.isFlagged) {
+          playMusic('setFlag');
           this.flagsDisplay.incrValue();
           this.minesDisplay.decrValue();
         } else {
