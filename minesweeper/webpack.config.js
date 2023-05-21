@@ -58,6 +58,10 @@ module.exports = {
         },
       },
       {
+        test: /\.wav$/i,
+        type: 'asset/resource',
+      },
+      {
         test: /\.(jpe?g|png|webp|gif|svg)$/i,
         use: devMode
           ? []
