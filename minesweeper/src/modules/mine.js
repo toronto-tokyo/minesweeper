@@ -7,7 +7,11 @@ class Box {
     this.place = place;
   }
 
-  addBox(matrix) {
+  setIsMine(value) {
+    this.isMine = value;
+  }
+
+  addBox() {
     this.box = document.createElement('div');
     this.box.dataset.x = this.place.x;
     this.box.dataset.y = this.place.y;
@@ -16,7 +20,15 @@ class Box {
     this.box.className = 'box';
     this.cap.className = 'cap';
     this.boxContent.className = 'box__content';
-    if (this.isMine === true) {
+    this.box.append(this.cap);
+    this.box.append(this.boxContent);
+    return this.box;
+  }
+
+  addContent(matrix) {
+    const { y, x } = this.place;
+    // if (this.isMine === true) {
+    if (matrix[y][x] === 1) {
       this.boxContent.classList.add('mine');
     } else {
       const number = this.countNearMines(matrix) > 0 ? this.countNearMines(matrix) : '';
@@ -32,9 +44,6 @@ class Box {
       if (number === 7) this.boxContent.classList.add('number-seven');
       if (number === 7) this.boxContent.classList.add('number-eight');
     }
-    this.box.append(this.cap);
-    this.box.append(this.boxContent);
-    return this.box;
   }
 
   countNearMines(matrix) {
@@ -55,50 +64,50 @@ class Box {
     return count;
   }
 
-  onClick(matrix) {
-    function removeCap(matr, box) {
-      if (!box || box.cap.className.includes('hidden')) {
-        return;
-      }
-      if (box.isMine === true) {
-        return;
-      }
-      if (box.isNumber === true) {
-        box.cap.classList.add('hidden');
-        openedBoxes += 1;
-      } else if (box.isEmpty) {
-        box.cap.classList.add('hidden');
-        openedBoxes += 1;
-        // console.log(box.box);
-        const { y, x } = box.place;
-        const roundBoxes = [];
-        const topLeftBox = matr[y - 1]?.[x - 1];
-        const topBox = matr[y - 1]?.[x];
-        const topRightBox = matr[y - 1]?.[x + 1];
-        const rightBox = matr[y]?.[x + 1];
-        const botRightBox = matr[y + 1]?.[x + 1];
-        const botBox = matr[y + 1]?.[x];
-        const botLeftBox = matr[y + 1]?.[x - 1];
-        const leftBox = matr[y]?.[x - 1];
-        roundBoxes.push(topBox);
-        roundBoxes.push(rightBox);
-        roundBoxes.push(botBox);
-        roundBoxes.push(leftBox);
-        roundBoxes.push(topLeftBox);
-        roundBoxes.push(topRightBox);
-        roundBoxes.push(botRightBox);
-        roundBoxes.push(botLeftBox);
-        roundBoxes.forEach((el) => removeCap(matr, el));
-      }
-    }
-
+  onClick() {
     this.box.addEventListener('click', () => {
       if (!this.cap.className.includes('hidden')) {
         steps += 1;
       }
-      removeCap(matrix, this);
     });
   }
 }
 
-export { Box, steps, openedBoxes };
+function removeCap(matr, box) {
+  if (!box || box.cap.className.includes('hidden')) {
+    return;
+  }
+  if (box.isNumber === true) {
+    box.cap.classList.add('hidden');
+    openedBoxes += 1;
+  } else if (box.isEmpty) {
+    box.cap.classList.add('hidden');
+    openedBoxes += 1;
+    const { y, x } = box.place;
+    const roundBoxes = [];
+    const topLeftBox = matr[y - 1]?.[x - 1];
+    const topBox = matr[y - 1]?.[x];
+    const topRightBox = matr[y - 1]?.[x + 1];
+    const rightBox = matr[y]?.[x + 1];
+    const botRightBox = matr[y + 1]?.[x + 1];
+    const botBox = matr[y + 1]?.[x];
+    const botLeftBox = matr[y + 1]?.[x - 1];
+    const leftBox = matr[y]?.[x - 1];
+    roundBoxes.push(topBox);
+    roundBoxes.push(rightBox);
+    roundBoxes.push(botBox);
+    roundBoxes.push(leftBox);
+    roundBoxes.push(topLeftBox);
+    roundBoxes.push(topRightBox);
+    roundBoxes.push(botRightBox);
+    roundBoxes.push(botLeftBox);
+    roundBoxes.forEach((el) => removeCap(matr, el));
+  }
+}
+
+export {
+  Box,
+  steps,
+  openedBoxes,
+  removeCap,
+};

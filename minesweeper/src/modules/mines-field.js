@@ -1,5 +1,5 @@
 import getRndInteger from './getRandom';
-import { Box, openedBoxes } from './mine';
+import { Box, openedBoxes, removeCap } from './mine';
 
 class MinesField {
   constructor(sizeX = 10, sizeY = 10, minesCount = 10) {
@@ -27,12 +27,10 @@ class MinesField {
   addContent() {
     for (let i = 0; i < this.sizeY; i += 1) {
       for (let j = 0; j < this.sizeX; j += 1) {
-        const box = this.matrix[i][j] === 1
-          ? new Box(true, { y: i, x: j })
-          : new Box(false, { y: i, x: j });
-        const content = box.addBox(this.matrix);
+        const box = new Box(false, { y: i, x: j });
+        const boxElem = box.addBox();
         box.onClick(this.boxesMatrix);
-        this.fieldRows[i].append(content);
+        this.fieldRows[i].append(boxElem);
         this.boxesMatrix[i][j] = box;
       }
     }
@@ -48,12 +46,12 @@ class MinesField {
     this.boxesMatrix = JSON.parse(JSON.stringify(this.matrix));
   }
 
-  placeMines() {
+  placeMines(firstClickY, firstClickX) {
     let count = this.minesCount;
     while (count) {
       const x = getRndInteger(0, this.sizeX);
       const y = getRndInteger(0, this.sizeY);
-      if (this.matrix[y][x] !== 1) {
+      if (this.matrix[y][x] !== 1 && x !== +firstClickX && y !== +firstClickY) {
         this.matrix[y][x] = 1;
         count -= 1;
       }
@@ -67,6 +65,16 @@ class MinesField {
         const box = e.target.closest('.box');
         const x = box.dataset.x;
         const y = box.dataset.y;
+        if (!this.firstClickPlace) {
+          this.firstClickPlace = box.dataset;
+          this.placeMines(y, x);
+          for (let i = 0; i < this.sizeY; i += 1) {
+            for (let j = 0; j < this.sizeX; j += 1) {
+              this.boxesMatrix[i][j].addContent(this.matrix);
+            }
+          }
+        }
+        removeCap(this.boxesMatrix, this.boxesMatrix[y][x]);
         if ((this.sizeX * this.sizeY) - openedBoxes === this.minesCount) {
           const time = timer.getTime();
           message.displayWin(time);
