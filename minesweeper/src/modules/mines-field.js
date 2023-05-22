@@ -4,8 +4,8 @@ import playMusic from './playMusic';
 
 class MinesField {
   constructor(sizeX = 10, sizeY = 10, minesCount = 10) {
-    this.sizeX = sizeX;
-    this.sizeY = sizeY;
+    this.sizeX = +sizeX;
+    this.sizeY = +sizeY;
     this.minesCount = minesCount;
     this.matrix = [];
     this.steps = 0;
@@ -42,7 +42,12 @@ class MinesField {
     for (let i = 0; i < this.sizeY; i += 1) {
       this.matrix.push([]);
       for (let j = 0; j < this.sizeX; j += 1) {
-        this.matrix[i][j] = 0;
+        if (this.sizeX === 10 && this.minesCount > 50) {
+          this.matrix[i][j] = 1;
+        }
+        if (this.sizeX !== 10 || this.minesCount <= 50) {
+          this.matrix[i][j] = 0;
+        }
       }
     }
     this.boxesMatrix = JSON.parse(JSON.stringify(this.matrix));
@@ -50,12 +55,29 @@ class MinesField {
 
   placeMines(firstClickY, firstClickX) {
     let count = this.minesCount;
+    if (this.sizeX === 10 && this.minesCount > 50) {
+      this.matrix[+firstClickY][+firstClickX] = 0;
+      if ((this.sizeX * this.sizeY) - this.minesCount - 1 === 0) count = 0;
+      else count += 1;
+    }
     while (count) {
       const x = getRndInteger(0, this.sizeX);
       const y = getRndInteger(0, this.sizeY);
-      if (this.matrix[y][x] !== 1 && x !== +firstClickX && y !== +firstClickY) {
-        this.matrix[y][x] = 1;
-        count -= 1;
+      if (this.sizeX === 10 && this.minesCount > 50) {
+        if (this.matrix[y][x] !== 0) {
+          this.matrix[y][x] = 0;
+          if ((this.sizeX * this.sizeY) - (count + 1) === 0) {
+            count = 0;
+          } else {
+            count += 1;
+          }
+        }
+      }
+      if (this.sizeX !== 10 || this.minesCount <= 50) {
+        if (this.matrix[y][x] !== 1 && x !== +firstClickX && y !== +firstClickY) {
+          this.matrix[y][x] = 1;
+          count -= 1;
+        }
       }
     }
   }
