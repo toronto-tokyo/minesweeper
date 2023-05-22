@@ -109,6 +109,7 @@ class MinesField {
           const time = timer.getTime();
           message.displayWin(time, this.steps);
           playMusic('win');
+          this.results.addWinResult(this.level, timer.getTime(), this.steps);
         }
         if (this.matrix[y][x] === 1) {
           playMusic('lose');
@@ -153,6 +154,14 @@ class MinesField {
 
   setTimeDisplay(display) {
     this.timeDisplay = display;
+  }
+
+  setResults(results) {
+    this.results = results;
+  }
+
+  setLevel(value) {
+    this.level = value;
   }
 }
 

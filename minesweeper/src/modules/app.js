@@ -4,6 +4,8 @@ import Message from './message';
 import Display from './display';
 import { createLvlButtons, setActiveLvlBtn, getActiveBtn } from './level-btn';
 import createMinesAmountArea from './mines-amount-area';
+import Results from './results';
+import { resultsData, getResDBLocalStorage } from './results-data-base';
 
 class App {
   constructor() {
@@ -44,9 +46,12 @@ class App {
     const minesDisplay = new Display();
     const stepsDisplay = new Display();
     const timeDisplay = new Display();
+    const results = new Results(resultsData);
+    getResDBLocalStorage(results);
     minesField.onClick(timer, message);
     appHeader.append(this.lvlButtons);
     appHeader.append(this.minesAmount);
+    appHeader.append(results.createResults());
     appHeader.append(stepsDisplay.createDisplay());
     appHeader.append(timeDisplay.createDisplay());
     appHeader.append(this.newGameButton);
@@ -55,6 +60,8 @@ class App {
     minesField.setFlagsDisplay(flagsDisplay);
     minesField.setMinesDisplay(minesDisplay);
     minesField.setStepsDisplay(stepsDisplay);
+    minesField.setResults(results);
+    minesField.setLevel(this.level);
     // minesField.setTimeDisplay(timeDisplay);
     timer.setDisplay(timeDisplay);
     app.append(appHeader);
