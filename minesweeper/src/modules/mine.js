@@ -40,7 +40,7 @@ class Box {
       if (number === 5) this.boxContent.classList.add('number-five');
       if (number === 6) this.boxContent.classList.add('number-six');
       if (number === 7) this.boxContent.classList.add('number-seven');
-      if (number === 7) this.boxContent.classList.add('number-eight');
+      if (number === 8) this.boxContent.classList.add('number-eight');
     }
   }
 
