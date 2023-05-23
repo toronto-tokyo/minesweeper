@@ -10,7 +10,7 @@ class BtnLevel {
     this.button.dataset.value = this.level;
     this.button.dataset.sizeX = this.sizeX;
     this.button.dataset.sizeY = this.sizeY;
-    this.button.className = 'choose-lvl__btn';
+    this.button.className = 'choose-lvl__btn button';
     this.button.textContent = this.level;
     return this.button;
   }
