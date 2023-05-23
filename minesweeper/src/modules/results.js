@@ -1,7 +1,7 @@
 class Results {
-  constructor(resultStory, resultsAmount = 10) {
+  constructor(resultsStory, resultsAmount = 10) {
     this.resultsAmount = resultsAmount;
-    this.resultsStory = resultStory;
+    this.resultsStory = resultsStory;
   }
 
   createResults() {
@@ -19,7 +19,7 @@ class Results {
     const recordTime = document.createElement('div');
     const recordMoves = document.createElement('div');
     this.results.className = 'results';
-    resButton.className = 'results__open-btn';
+    resButton.className = 'results__open-btn button';
     this.resPopUp.className = 'results__popup hidden';
     resPopUpContent.className = 'results__popup-content';
     closeResPopUpBtn.className = 'results__close-btn';
@@ -35,17 +35,8 @@ class Results {
     this.resultRecord.append(recordLevel);
     this.resultRecord.append(recordTime);
     this.resultRecord.append(recordMoves);
-    this.addRecords();
-    const recordsHeaders = this.resultRecord.cloneNode(true);
-    const recordLevelHeaderElem = recordsHeaders.querySelector('.record__level');
-    const recordTimeHeaderElem = recordsHeaders.querySelector('.record__time');
-    const recordMovesHeaderElem = recordsHeaders.querySelector('.record__moves');
-    recordsHeaders.classList.add('records-headers');
-    this.resultsRecords.prepend(recordsHeaders);
-    recordLevelHeaderElem.textContent = 'Level';
-    recordTimeHeaderElem.textContent = 'Time';
-    recordMovesHeaderElem.textContent = 'Moves';
     resPopUpHeader.textContent = 'Results';
+    this.addRecords();
     closeResPopUpBtn.append(closeResPopUpBtnContent);
     resPopUpContent.append(closeResPopUpBtn);
     resPopUpContent.append(resPopUpHeader);
@@ -58,7 +49,21 @@ class Results {
     return this.results;
   }
 
+  addRecordHeader() {
+    const recordsHeaders = this.resultRecord.cloneNode(true);
+    const recordLevelHeaderElem = recordsHeaders.querySelector('.record__level');
+    const recordTimeHeaderElem = recordsHeaders.querySelector('.record__time');
+    const recordMovesHeaderElem = recordsHeaders.querySelector('.record__moves');
+    recordsHeaders.classList.add('records-headers');
+    recordLevelHeaderElem.textContent = 'Level';
+    recordTimeHeaderElem.textContent = 'Time, sec';
+    recordMovesHeaderElem.textContent = 'Moves';
+    this.resultsRecords.prepend(recordsHeaders);
+  }
+
   addRecords() {
+    this.resultsRecords.innerHTML = '';
+    this.addRecordHeader();
     for (let i = 0; i < this.resultsAmount; i += 1) {
       const recordElem = this.resultRecord.cloneNode(true);
       const recordNumElem = recordElem.querySelector('.record__number');
@@ -114,7 +119,6 @@ class Results {
     } else {
       this.resultsStory.unshift(result);
     }
-    console.log(this.resultsStory);
     this.updateResults();
   }
 
