@@ -12,7 +12,7 @@ function getResDBLocalStorage(results) {
     if (localStorage.getItem('resultsDB')) {
       resultsData.length = 0;
       resultsData.push(...JSON.parse(localStorage.getItem('resultsDB')));
-      results.setResultStory(...resultsData);
+      results.setResultStory(resultsData);
     }
   });
 }
