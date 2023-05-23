@@ -89,6 +89,7 @@ class MinesField {
         const box = e.target.closest('.box');
         const x = box.dataset.x;
         const y = box.dataset.y;
+        if (this.boxesMatrix[y][x].isFlagged) return;
         if (!this.boxesMatrix[y][x].cap.className.includes('hidden')) {
           playMusic('openBox');
           this.steps += 1;
@@ -104,7 +105,6 @@ class MinesField {
           }
         }
         removeCap(this.boxesMatrix, this.boxesMatrix[y][x], this.openedBoxesAmount);
-        console.log((this.sizeX * this.sizeY) - this.openedBoxesAmount);
         if ((this.sizeX * this.sizeY) - this.openedBoxesAmount === this.minesCount) {
           const time = timer.getTime();
           message.displayWin(time, this.steps);
@@ -118,13 +118,14 @@ class MinesField {
       }
     });
     this.minesField.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
       if (e.target.closest('.box')) {
+        e.preventDefault();
         timer.countTime();
         const boxElem = e.target.closest('.box');
         const x = boxElem.dataset.x;
         const y = boxElem.dataset.y;
         const box = this.boxesMatrix[y][x];
+        if (box.cap.className.includes('hidden')) return;
         box.isFlagged = !box.isFlagged;
         box.box.classList.toggle('flagged');
         if (box.isFlagged) {
