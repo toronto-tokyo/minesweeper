@@ -1,0 +1,262 @@
+body {
+  user-select: none;
+  font-weight: 900;
+  font-size: 24px;
+  position: relative;
+}
+
+.app {
+  margin: 150px auto;
+
+  &__header{
+    margin: 0 auto;
+    max-width: 500px;
+    min-height: 50px;
+
+    &-settings,
+    &-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.display {
+  text-align: center;
+  font-weight: 600;
+}
+
+.message {
+  position: fixed;
+  z-index: 15;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    flex: 0 1 400px;
+    min-height: 150px;
+    background-color: bisque;
+    border-radius: 9px;
+  }
+
+  &__content-row {
+    font-size: 2rem;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  &__btn-new-game {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.mines-field{
+}
+
+.mines-field__row{
+  display: flex;
+  justify-content: center ;
+}
+
+.button {
+  border: none;
+  font-size: 20px;
+  text-transform: capitalize;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  height: 30px;
+}
+
+.mines-amount {
+  font-weight: 600;
+  &__input {
+    width: 40px;
+    font-size: 18px;
+    outline: none;
+    border: 1px solid gray;
+  }
+}
+
+.mine{
+  background: url('./assets/bomb.svg') 0 0/contain no-repeat;
+  width: 60%;
+  height: 60%;
+}
+
+.box {
+  flex: 0 1 50px;
+  height: 50px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+}
+
+.cap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(141, 141, 141);
+  border-color: white;
+  border-style: groove;
+  border-width: 1px;
+  z-index: 5;
+} 
+
+.hidden {
+  display: none;
+}
+
+.number-one{
+  color: rgb(0, 38, 255); 
+}
+
+.number-two{
+  color: rgb(2, 177, 2);
+}
+
+.number-three{
+  color: rgb(255, 0, 0);
+}
+
+.number-four{
+  color: rgb(141, 0, 188);
+}
+
+.number-five{
+  color: rgb(156, 104, 0);
+}
+
+.number-six{
+  color: rgb(255, 242, 0);
+}
+
+.number-seven{
+  color: rgb(0, 188, 182);
+}
+
+.number-eight{
+  color: rgb(0, 0, 0);
+}
+
+.flagged::before{
+  content: '';
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  left: 10%;
+  z-index: 10;
+  top: 10%;
+  background: url('./assets/flag.svg') 0 0/contain no-repeat;
+}
+
+.choose-lvl{
+
+  &__btn {
+    &.active {
+      background-color: antiquewhite;
+    }
+  }
+}
+
+.popup-visible {
+  display: flex;
+}
+.record {
+  display: flex;
+  margin-bottom: 15px;
+  border-bottom: 1px solid black;
+  
+  &.records-headers{
+    border-bottom: none;
+  }
+
+  &__number {
+    flex: 0 1 10%;
+    text-align: center;
+  }
+  &__level,
+  &__time,
+  &__moves {
+    flex: 0 1 30%;
+    text-align: center;
+  }
+}
+.results {
+  &__open-btn {
+    cursor: pointer;
+  }
+
+  &__popup {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50, 50, 50, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  &__popup-content {
+    position: relative;
+    border: 1px solid black;
+    border-radius: 9px;
+    flex: 0 1 600px;
+    background-color: antiquewhite;
+  }
+  &__close-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 25px;
+    height: 25px;
+
+    &-symbol {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      &::before,
+      &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        top: 50%;
+        left: 0;
+        background-color: #000;
+      }
+
+      &::before {
+        transform: translate(0, -50%)  rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(0, -50%)  rotate(-45deg);
+      }
+    }
+  }
+  &__header {
+    text-align: center;
+  }
+  &__records {}
+  &__record {
+
+  }
+}
+
